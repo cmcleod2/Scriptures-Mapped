@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html class="nojs" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Scriptures, Mapped</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="The Standard Works, Mapped">
+    <meta name="author" content="Christopher McLeod">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <link rel="apple-touch-icon" href="icon.ico">
+    <link rel="icon" href="icon.ico">
+    <!--Place favicon.ico in the root directory-->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <meta name="theme-color" content="#fafafa">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6Vxny6TD7eCk1UnCbFsIpFVen0xlqvc&callback=initMap">
+    </script>
+    <script src="https://unpkg.com/@googlemaps/markerwithlabel/dist/index.min.js"></script>
+</head>
+<body>
+
+    <div id="header">
+        <div id="crumb"></div>
+        <div id="centerhead">
+            <div class="title">The Scriptures, Mapped</div>
+            <div class="subtitle">By Christopher McLeod</div>
+        </div>
+    </div>
+
+    <div id="content">
+        <div id="scriptures">
+            <div id="scripnav1"></div>
+            <div id="scripnav2"></div>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script type="text/javascript">
+        let map;
+        let showLocation;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 31.7683, lng: 35.2137 },
+                zoom: 8,
+                mapTypeId: 'terrain'
+            });
+        }
+    </script>
+
+    <script type="module">
+        import("./js/scriptures.js").then(module => {
+            function ready(readyListener) {
+                if (document.readyState !== "loading") {
+                    readyListener();
+                } else {
+                    document.addEventListener("DOMContentLoaded", readyListener);
+                }
+            }
+
+            ready(function () {
+                module.default.init(() => { module.default.onHashChanged(); });
+                showLocation = module.default.showLocation;
+                window.addEventListener("hashchange", module.default.onHashChanged);
+            });
+        });
+    </script>
+</body>
+</html>
